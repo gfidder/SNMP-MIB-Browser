@@ -31,7 +31,9 @@ EventsOn("mibsLoaded", ReloadMibTree);
     >
       <h2 class="flex items-center text-2xl text-black">SNMP Oids</h2>
     </div>
-    <div class="scrollbar flex justify-start overflow-auto text-left">
+    <div
+      class="scrollbar block h-full justify-start overflow-auto pb-14 text-left"
+    >
       <TreeMenu class="" :node="otherOidTree.oidTree" :depth="0"></TreeMenu>
     </div>
   </div>

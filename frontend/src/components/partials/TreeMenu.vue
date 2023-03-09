@@ -1,14 +1,5 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-// import Folder from "~icons/mdi/folder";
-import Key from "~icons/mdi/key-variant";
-import Leaf from "~icons/mdi/leaf";
-import Pen from "~icons/mdi/fountain-pen-tip";
-import Table from "~icons/mdi/table-large";
-import TableRow from "~icons/mdi/table-row";
-import LightningBolt from "~icons/mdi/lightning-bolt";
-import PlusCircle from "~icons/mdi/plus-circle-outline";
-import FolderOutline from "~icons/mdi/folder-outline";
 import { Icon } from "@iconify/vue";
 import { OidTree } from "../../utils/treeBuilder";
 import { EventsEmit, EventsOn } from "../../../wailsjs/runtime/runtime";
@@ -51,51 +42,40 @@ function calculatePadding(): string {
   return padding;
 }
 
-function isModuleIdentifier(): boolean {
-  switch (props.node.type) {
-    case "ObjectIdentity":
-    case "ModuleIdentity":
-      return true;
-    default:
-      return false;
-  }
-}
-
 // TODO : conformance OIDs
 
-function isObjectType(): boolean {
-  return props.node.type === "ObjectType";
-}
+function getIconString() {
+  const type = props.node.type;
+  let retVal = "";
 
-function isIndex(): boolean {
-  return props.node.is_index;
-}
-
-function isTable(): boolean {
-  if (props.node.syntax) {
-    return props.node.syntax.includes("SEQUENCE OF");
+  if (type === "ObjectIdentity" || type === "ModuleIdentity") {
+    retVal = "mdi:folder-outline";
+  } else if (props.node.is_index) {
+    retVal = "mdi:key-variant";
+  } else if (props.node.syntax && props.node.syntax.includes("SEQUENCE OF")) {
+    retVal = "mdi:table-large";
+  } else if (props.node.is_row) {
+    retVal = "mdi:table-row";
+  } else if (
+    props.node.type === "ObjectType" &&
+    props.node.access === "read-only"
+  ) {
+    retVal = "mdi:leaf";
+  } else if (
+    props.node.type === "ObjectType" &&
+    props.node.access === "read-write"
+  ) {
+    retVal = "mdi:fountain-pen-tip";
+  } else if (
+    props.node.type === "ObjectType" &&
+    props.node.access === "read-create"
+  ) {
+    retVal = "mdi:plus-circle-outline";
+  } else if (props.node.type === "NotificationType") {
+    retVal = "mdi:lightning-bolt";
   }
-  return false;
-}
 
-function isRow(): boolean {
-  return props.node.is_row;
-}
-
-function isReadOnly(): boolean {
-  return props.node.access === "read-only";
-}
-
-function isReadWrite(): boolean {
-  return props.node.access === "read-write";
-}
-
-function isReadCreate(): boolean {
-  return props.node.access === "read-create";
-}
-
-function isNotificationType(): boolean {
-  return props.node.type === "NotificationType";
+  return retVal;
 }
 
 function printType() {
@@ -145,39 +125,7 @@ function onClick(payload: MouseEvent) {
           @click="toggleChildren"
         />
         <div :class="calculatePadding()" class="flex">
-          <FolderOutline
-            v-if="isModuleIdentifier()"
-            class="folder"
-            height="20"
-            width="20"
-          />
-          <Key v-else-if="isIndex()" class="key" height="20" width="20" />
-          <Table v-else-if="isTable()" class="table" height="20" width="20" />
-          <TableRow v-else-if="isRow()" class="row" height="20" width="20" />
-          <Leaf
-            v-else-if="isObjectType() && isReadOnly()"
-            class="leaf"
-            height="20"
-            width="20"
-          />
-          <Pen
-            v-else-if="isObjectType() && isReadWrite()"
-            class="pen"
-            height="20"
-            width="20"
-          />
-          <PlusCircle
-            v-else-if="isObjectType() && isReadCreate()"
-            class="plus"
-            height="20"
-            width="20"
-          />
-          <LightningBolt
-            v-else-if="isNotificationType()"
-            class="lightning"
-            height="20"
-            width="20"
-          />
+          <Icon :icon="getIconString()" height="20" width="20" />
           <p
             class="ml-1 select-none pr-1"
             :class="isSelected ? 'bg-blue-600 text-white' : ''"
