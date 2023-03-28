@@ -4,6 +4,8 @@ import { EventsOn } from "../../wailsjs/runtime/runtime";
 import { GetCurrentOids } from "../../wailsjs/go/main/App";
 import { OidTree, TreeSorter } from "../utils/treeBuilder";
 import { ref, reactive, onBeforeMount } from "vue";
+import { Splitpanes, Pane } from "splitpanes";
+import "splitpanes/dist/splitpanes.css";
 
 const updateCounter = ref(0);
 
@@ -31,10 +33,28 @@ EventsOn("mibsLoaded", ReloadMibTree);
     >
       <h2 class="flex items-center text-2xl text-black">SNMP Oids</h2>
     </div>
-    <div
-      class="scrollbar block h-full justify-start overflow-auto pb-14 text-left"
-    >
-      <TreeMenu class="" :node="otherOidTree.oidTree" :depth="0"></TreeMenu>
-    </div>
+    <Splitpanes horizontal class="h-full">
+      <Pane max-size="70" min-size="20">
+        <div
+          class="scrollbar flex h-full justify-start overflow-auto pb-14 text-left"
+        >
+          <TreeMenu class="" :node="otherOidTree.oidTree" :depth="0"></TreeMenu>
+        </div>
+      </Pane>
+      <Pane>
+        <div>New Pane</div>
+      </Pane>
+    </Splitpanes>
   </div>
 </template>
+
+<style>
+.splitpanes__pane {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) inset;
+}
+
+.splitpanes--horizontal > .splitpanes__splitter {
+  min-height: 6px;
+  cursor: ns-resize;
+}
+</style>
