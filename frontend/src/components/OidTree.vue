@@ -3,6 +3,7 @@ import TreeMenu from "@/components/partials/TreeMenu.vue";
 import { EventsOn } from "../../wailsjs/runtime/runtime";
 import { GetCurrentOids } from "../../wailsjs/go/main/App";
 import { OidTree, TreeSorter } from "../utils/treeBuilder";
+import OidInfo from "@/components/OidInfo.vue";
 import { ref, reactive, onBeforeMount } from "vue";
 import { Splitpanes, Pane } from "splitpanes";
 import "splitpanes/dist/splitpanes.css";
@@ -42,7 +43,7 @@ EventsOn("mibsLoaded", ReloadMibTree);
         </div>
       </Pane>
       <Pane>
-        <div>New Pane</div>
+        <OidInfo />
       </Pane>
     </Splitpanes>
   </div>
