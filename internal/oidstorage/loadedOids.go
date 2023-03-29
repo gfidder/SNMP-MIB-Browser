@@ -1,5 +1,9 @@
 package oidstorage
 
+import (
+	"fmt"
+)
+
 type LoadedOids struct {
 	oids       []Oid
 	loadedMibs []string
@@ -205,6 +209,16 @@ func (l *LoadedOids) findOidByName(oidName string) *Oid {
 		}
 	}
 	return nil
+}
+
+func (l *LoadedOids) FindOidByOidNumber(oidNumber string) (Oid, error) {
+	for i, oid := range l.oids {
+		if oid.OID == oidNumber {
+			return l.oids[i], nil
+		}
+	}
+
+	return Oid{}, fmt.Errorf("OID not found for OID number: %s", oidNumber)
 }
 
 func (l *LoadedOids) GetLoadedOids() []Oid {

@@ -103,6 +103,8 @@ function onClick(payload: MouseEvent) {
   }
 
   isSelected.value = true;
+  // fire event here to
+  EventsEmit("itemSelected", props.node.oid);
 }
 </script>
 

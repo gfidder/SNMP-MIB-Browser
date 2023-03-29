@@ -84,11 +84,30 @@ func (a *App) startup(ctx context.Context) {
 
 		runtime.EventsEmit(a.ctx, "agentsUpdated")
 	})
+
+	runtime.EventsOn(a.ctx, "itemSelected", func(optionalData ...interface{}) {
+		oidNumber := optionalData[0].(string)
+
+		a.getOidInfo(oidNumber)
+
+		fmt.Printf("%s\n", oidNumber)
+	})
 }
 
 func (a *App) shutdown(ctx context.Context) {
 	a.db.CloseDb()
 	a.agentStores.CloseAllConnections()
+}
+
+func (a *App) getOidInfo(oidNumber string) {
+	oid, err := a.loadedOids.FindOidByOidNumber(oidNumber)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	repr.Println(oid)
+
+	// need to fire something back to OidInfo.vue so we can then grab the OID info
 }
 
 func (a *App) ParseMib() {
