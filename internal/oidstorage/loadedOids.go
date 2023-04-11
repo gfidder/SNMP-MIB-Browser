@@ -51,10 +51,16 @@ func createBaseOids() []Oid {
 
 	sysDescr := CreateNewOid("sysDescr", ".1.3.6.1.2.1.1.1", "SNMPv2-MIB")
 	sysDescr.Access = "read-only"
+	sysDescr.Status = "current"
+	sysDescr.Syntax = "DisplayString (OCTET STRING) (SIZE (0..255))"
+	sysDescr.Description = "A textual description of the entity.  This value should include the full name and version identification of the system's hardware type, software operating-system, and networking software."
 	sysDescr.Type = ObjectType
 
 	sysObjectID := CreateNewOid("sysObjectID", ".1.3.6.1.2.1.1.2", "SNMPv2-MIB")
 	sysObjectID.Access = "read-only"
+	sysObjectID.Syntax = "OBJECT IDENTIFIER"
+	sysObjectID.Status = "current"
+	sysObjectID.Description = "The vendor's authoritative identification of the network management subsystem contained in the entity. This value is allocated within the SMI enterprises subtree (1.3.6.1.4.1) and provides an easy and unambiguous means for determining  what kind of box' is being managed.  For example, if vendor `Flintstones, Inc.' was assigned the subtree 1.3.6.1.4.1.424242, it could assign the identifier 1.3.6.1.4.1.424242.1.1 to its `Fred Router'."
 	sysObjectID.Type = ObjectType
 
 	sysUpTime := CreateNewOid("sysUpTime", ".1.3.6.1.2.1.1.3", "SNMPv2-MIB")

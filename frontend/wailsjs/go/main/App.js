@@ -10,6 +10,10 @@ export function GetCurrentOids() {
   return window['go']['main']['App']['GetCurrentOids']();
 }
 
+export function GetOidByOidNumber(arg1) {
+  return window['go']['main']['App']['GetOidByOidNumber'](arg1);
+}
+
 export function ParseMib() {
   return window['go']['main']['App']['ParseMib']();
 }

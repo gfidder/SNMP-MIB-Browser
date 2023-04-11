@@ -99,15 +99,15 @@ func (a *App) shutdown(ctx context.Context) {
 	a.agentStores.CloseAllConnections()
 }
 
-func (a *App) getOidInfo(oidNumber string) {
+func (a *App) getOidInfo(oidNumber string) oidstorage.Oid {
 	oid, err := a.loadedOids.FindOidByOidNumber(oidNumber)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	repr.Println(oid)
+	// repr.Println(oid)
 
-	// need to fire something back to OidInfo.vue so we can then grab the OID info
+	return oid
 }
 
 func (a *App) ParseMib() {
@@ -152,4 +152,8 @@ func (a *App) SendGetRequest() {
 
 func (a *App) SendGetRequestWithOid(oid string) {
 	a.agentStores.PerformSnmpGetOid(oid)
+}
+
+func (a *App) GetOidByOidNumber(oid string) oidstorage.Oid {
+	return a.getOidInfo(oid)
 }
